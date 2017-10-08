@@ -1,0 +1,38 @@
+version: '3'
+services:
+  jenkins:
+    container_name: jenkins
+    image: jenkins
+    tty: true
+    build:
+      context: .
+      dockerfile: JenkinsDockerfile
+    ports:
+      - "0.0.0.0:49001:8080"
+    volumes:
+      - /root/docker/jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+  rancher:
+    container_name: rancher
+    image: rancher/server:stable
+    tty: true
+    ports:
+      - "0.0.0.0:49002:8080"
+    volumes:
+      - /root/docker/rancher:/var/lib/mysql
+  registry:
+    container_name: registry
+    restart: always
+    image: registry:2
+    ports:
+      - 49003:5000
+    environment:
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/domain.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/domain.key
+    volumes:
+      - /root/docker/registry/data:/var/lib/registry
+      - /root/docker/registry/auth:/auth
+      - /root/docker/certs/ssl:/certs
