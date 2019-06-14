@@ -14,7 +14,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
   rancher:
     container_name: rancher
-    image: rancher/server:stable
+    image: rancher/rancher:stable
     tty: true
     ports:
       - "0.0.0.0:49002:8080"
