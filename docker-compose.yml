@@ -17,7 +17,7 @@ services:
     image: rancher/rancher:stable
     tty: true
     ports:
-      - "0.0.0.0:49002:8080"
+      - "0.0.0.0:49002:80"
     volumes:
       - /home/docker/rancher:/var/lib/mysql
   registry:
